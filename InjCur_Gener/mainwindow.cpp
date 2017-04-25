@@ -2,6 +2,12 @@
 #include "ui_mainwindow.h"
 #include "cmath"
 #include "qtimer.h"
+#include <vector>
+#include "visa.h"
+
+using std::vector;
+
+typedef void (MainWindow::*pMemberFunction) (const char *);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,6 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     timer_freq = new QTimer(this);
     connect(timer_freq, SIGNAL(timeout()), this, SLOT(update_Freq_Change()));
+
+    static QtILogger dupa;
+
+    VSes.registerLogger(dupa);
+    VSes.registerLogger(*this);
+    VSes.Visa_Init();
+
 }
 
 MainWindow::~MainWindow()
@@ -26,6 +39,10 @@ void MainWindow::on_ButtonExit_clicked()
 
 void MainWindow::on_ButtonTestStart_clicked()
 {
+
+    /*load all test settings*/
+
+
     /*test*/
     //QString message;
     std::string message;
@@ -179,6 +196,11 @@ void MainWindow::update_Freq_Change(void){
     message += std::to_string(temp_val++);
 
     ui->plainTextEdit_Message->appendPlainText(QString::fromStdString(message));
+}
+
+void MainWindow::put(const std::string& data)
+{
+    ui->plainTextEdit_Message->appendPlainText(QString::fromStdString(data));
 }
 
 void MainWindow::on_ButtonTestStop_clicked()

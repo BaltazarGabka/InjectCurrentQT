@@ -24,8 +24,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    InjCur.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    InjCur.h \
+    ILogger.hpp
 
 FORMS    += mainwindow.ui
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/'../../../../../../Program Files (x86)/IVI Foundation/VISA/WinNT/lib/msc/' -ltkVisa32
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/'../../../../../../Program Files (x86)/IVI Foundation/VISA/WinNT/lib/msc/' -ltkVisa32
+
+INCLUDEPATH += $$PWD/'../../../../../../Program Files (x86)/IVI Foundation/VISA/WinNT/include'
+DEPENDPATH += $$PWD/'../../../../../../Program Files (x86)/IVI Foundation/VISA/WinNT/lib/msc'
